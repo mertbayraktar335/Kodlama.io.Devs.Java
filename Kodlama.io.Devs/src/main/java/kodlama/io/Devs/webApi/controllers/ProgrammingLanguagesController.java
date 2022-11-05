@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kodlama.io.Devs.business.abstracts.ProgrammingLanguageService;
-import kodlama.io.Devs.business.requests.CreateProgrammingLangugageRequest;
-import kodlama.io.Devs.business.responses.GetAllProgrammingLanguagesResponse;
+import kodlama.io.Devs.business.requests.ProgrammingLanguages.CreateProgrammingLangugageRequest;
+import kodlama.io.Devs.business.requests.ProgrammingLanguages.UpdateProgrammingLanguageRequest;
+import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetAllProgrammingLanguagesResponse;
+import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetByIdProgrammingLanguageResponse;
 import kodlama.io.Devs.entities.concretes.ProgrammingLanguage;
 
 @RestController // annotation
@@ -35,20 +37,20 @@ public class ProgrammingLanguagesController {
         return programmingLanguageService.add(programmingLanguageRequest);
     }
 
-    // @DeleteMapping("/delete")
-    // public void delete(int id) throws Exception {
-    //     programmingLanguageService.delete(id);
-    // }
+    @DeleteMapping("/delete")
+    public void delete(int id) throws Exception {
+        programmingLanguageService.delete(id);
+    }
 
-    // @GetMapping("/getbyid")
-    // public ProgrammingLanguage getById(int id) throws Exception {
-    //     return programmingLanguageService.getById(id);
-    // }
+    @GetMapping("/getbyid")
+    public GetByIdProgrammingLanguageResponse getById(int id) throws Exception {
+        return programmingLanguageService.getById(id);
+    }
 
-    // @PutMapping("/update")
+    @PutMapping("/update")
 
-    // public void update(ProgrammingLanguage programmingLanguage,int id)throws Exception {
-    //     programmingLanguageService.update(programmingLanguage,id);
-    // }
+    public void update(UpdateProgrammingLanguageRequest updateProgrammingLanguageRequest,int id)throws Exception {
+        programmingLanguageService.update(updateProgrammingLanguageRequest,id);
+    }
 
 }

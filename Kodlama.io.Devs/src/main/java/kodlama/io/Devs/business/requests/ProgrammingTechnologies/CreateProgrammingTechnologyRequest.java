@@ -1,4 +1,4 @@
-package kodlama.io.Devs.business.requests;
+package kodlama.io.Devs.business.requests.ProgrammingTechnologies;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class CreateProgrammingLangugageRequest {
+public class CreateProgrammingTechnologyRequest {
+    int programmingLanguageId;
     private String name;
-
 }

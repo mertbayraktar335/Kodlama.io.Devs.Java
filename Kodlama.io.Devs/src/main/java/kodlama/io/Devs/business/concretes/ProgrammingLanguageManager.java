@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kodlama.io.Devs.business.abstracts.ProgrammingLanguageService;
-import kodlama.io.Devs.business.requests.CreateProgrammingLangugageRequest;
-import kodlama.io.Devs.business.responses.GetAllProgrammingLanguagesResponse;
-import kodlama.io.Devs.dataAccess.abstracts.ProgrammingLanguageRepository;
+import kodlama.io.Devs.business.requests.ProgrammingLanguages.CreateProgrammingLangugageRequest;
+import kodlama.io.Devs.business.requests.ProgrammingLanguages.UpdateProgrammingLanguageRequest;
+import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetAllProgrammingLanguagesResponse;
+import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetByIdProgrammingLanguageResponse;
+import kodlama.io.Devs.dataAccess.abstracts.ProgrammingLanguages.ProgrammingLanguageRepository;
 import kodlama.io.Devs.entities.concretes.ProgrammingLanguage;
 
 @Service
@@ -23,63 +25,71 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
     @Override
     public List<GetAllProgrammingLanguagesResponse> getAll() {
         List<ProgrammingLanguage> pLanguages = programmingLanguageRepository.findAll();
-        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses=new ArrayList<GetAllProgrammingLanguagesResponse>();
-        
+        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses = new ArrayList<GetAllProgrammingLanguagesResponse>();
+
         for (ProgrammingLanguage programmingLanguage : pLanguages) {
 
-            GetAllProgrammingLanguagesResponse responseItem =new GetAllProgrammingLanguagesResponse();
+            GetAllProgrammingLanguagesResponse responseItem = new GetAllProgrammingLanguagesResponse();
             responseItem.setId(programmingLanguage.getId());
             responseItem.setName(programmingLanguage.getName());
             programmingLanguagesResponses.add(responseItem);
-            
-            
+
         }
-        
-        
-        
+
         return programmingLanguagesResponses;
     }
 
     @Override
     public ProgrammingLanguage add(CreateProgrammingLangugageRequest programmingLanguageRequest) throws Exception {
-        
+
         if (!isNameValid(programmingLanguageRequest.getName())) {
             throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
         }
-        ProgrammingLanguage programmingLanguage=new ProgrammingLanguage();
+        ProgrammingLanguage programmingLanguage = new ProgrammingLanguage();
         programmingLanguage.setName(programmingLanguageRequest.getName());
         return programmingLanguageRepository.save(programmingLanguage);
     }
 
-    // @Override
-    // public void delete(int id) throws Exception {
-
-    //     ProgrammingLanguage pLanguageToDelete = getById(id);
-    //     if (!isIdExist(pLanguageToDelete.getId())) {
-    //         throw new Exception("ID BULUNAMADI");
-    //     }
-    //     programmingLanguageRepository.delete(pLanguageToDelete);
-
-    // }
-
     @Override
-    public ProgrammingLanguage getById(int id) throws Exception {
+    public void delete(int id) throws Exception {
 
+        
         if (!isIdExist(id)) {
-            throw new Exception("ID BULUNAMADI");
+            throw new Exception("Programlama Dili Bulunamadı");
         }
-        return programmingLanguageRepository.getReferenceById(id);
+        ProgrammingLanguage pLanguageToDelete = programmingLanguageRepository.findById(id).get();
+        programmingLanguageRepository.delete(pLanguageToDelete);
 
     }
 
-    // @Override
-    // public void update(ProgrammingLanguage programmingLanguage, int id) throws Exception {
-    //     if (!isIdExist(id)) {
-    //         throw new Exception("ID BULUNAMADI");
+    @Override
+    public GetByIdProgrammingLanguageResponse getById(int id) throws Exception {
 
-    //     }
-    //     programmingLanguageRepository.save(programmingLanguage );
-    // }
+        if (!isIdExist(id)) {
+            throw new Exception("Programlama Dili Bulunamadı");
+        }
+        ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).get();
+        GetByIdProgrammingLanguageResponse responseItem = new GetByIdProgrammingLanguageResponse();
+        responseItem.setId(programmingLanguage.getId());
+        responseItem.setName(programmingLanguage.getName());
+        // responseItem.setTechnologies(programmingLanguage.getTechnologies().toArray());
+        return responseItem;
+
+    }
+
+    @Override
+    public void update(UpdateProgrammingLanguageRequest updateProgrammingLanguageRequest, int id) throws Exception {
+        if (!isIdExist(id)) {
+            throw new Exception("Programlama Dili Bulunamadı");
+
+        }
+        if(!isNameValid(updateProgrammingLanguageRequest.getName())){
+            throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
+        }
+        ProgrammingLanguage programmingLanguage = programmingLanguageRepository.getReferenceById(id);
+        programmingLanguage.setName(updateProgrammingLanguageRequest.getName());
+        programmingLanguageRepository.save(programmingLanguage);
+    }
 
     private boolean isIdExist(int id) {
         for (ProgrammingLanguage pLanguage : programmingLanguageRepository.findAll()) {
@@ -106,6 +116,5 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
         }
         return true;
     }
-   
 
 }

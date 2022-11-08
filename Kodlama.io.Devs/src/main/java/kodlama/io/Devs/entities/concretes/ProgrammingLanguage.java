@@ -30,8 +30,6 @@ public class ProgrammingLanguage {
     @Column(name = "name")
     private String name;
 
-   
-    
     @OneToMany(mappedBy = "programmingLanguage", cascade = CascadeType.ALL)
     private List<ProgrammingTechnology> technologies;
     

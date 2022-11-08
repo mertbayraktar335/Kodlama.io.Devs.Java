@@ -7,6 +7,7 @@ import kodlama.io.Devs.business.requests.ProgrammingTechnologies.UpdateProgrammi
 import kodlama.io.Devs.business.responses.ProgrammingTechnologies.GetAllProgrammingTechnologiesResponse;
 import kodlama.io.Devs.business.responses.ProgrammingTechnologies.GetByIdProgrammingTechnologyResponse;
 
+
 public interface ProgrammingTechnologyService {
     List<GetAllProgrammingTechnologiesResponse> getAll();
 
@@ -18,4 +19,5 @@ public interface ProgrammingTechnologyService {
 
     void update(UpdateProgrammingTechnologyRequest updateProgrammingTechnologyRequest, int id) throws Exception;
 
+    
 }

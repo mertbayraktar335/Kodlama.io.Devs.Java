@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class GetByIdProgrammingLanguageResponse {
     private int id;
     private String name;
-    // private Object[] technologies;
+     
 }

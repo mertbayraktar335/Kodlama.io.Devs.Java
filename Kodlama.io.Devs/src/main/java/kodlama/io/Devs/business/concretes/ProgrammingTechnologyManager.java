@@ -10,6 +10,7 @@ import kodlama.io.Devs.business.requests.ProgrammingTechnologies.CreateProgrammi
 import kodlama.io.Devs.business.requests.ProgrammingTechnologies.UpdateProgrammingTechnologyRequest;
 import kodlama.io.Devs.business.responses.ProgrammingTechnologies.GetAllProgrammingTechnologiesResponse;
 import kodlama.io.Devs.business.responses.ProgrammingTechnologies.GetByIdProgrammingTechnologyResponse;
+
 import kodlama.io.Devs.dataAccess.abstracts.ProgrammingLanguages.ProgrammingLanguageRepository;
 import kodlama.io.Devs.dataAccess.abstracts.ProgrammingTechnologies.ProgrammingTechnologyRepository;
 import kodlama.io.Devs.entities.concretes.ProgrammingLanguage;
@@ -38,6 +39,7 @@ public class ProgrammingTechnologyManager implements ProgrammingTechnologyServic
             responseItem.setId(programmingTechnology.getId());
             responseItem.setName(programmingTechnology.getName());
             responseItem.setProgrammingLanguageId(programmingTechnology.getProgrammingLanguage().getId());
+            responseItem.setProgrammingLanguageName(programmingTechnology.getProgrammingLanguage().getName());
             programmingTechnologiesResponses.add(responseItem);
 
         }
@@ -79,7 +81,7 @@ public class ProgrammingTechnologyManager implements ProgrammingTechnologyServic
         responseItem.setId(programmingTechnology.getId());
         responseItem.setName(programmingTechnology.getName());
         responseItem.setProgrammingLanguageId(programmingTechnology.getProgrammingLanguage().getId());
-         return responseItem;
+        return responseItem;
     }
 
     @Override
@@ -89,7 +91,7 @@ public class ProgrammingTechnologyManager implements ProgrammingTechnologyServic
             throw new Exception("Programlama teknolojisi bulunamadı");
 
         }
-        if(!isNameValid(updateProgrammingLanguageRequest.getName())){
+        if (!isNameValid(updateProgrammingLanguageRequest.getName())) {
             throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
         }
         ProgrammingTechnology programmingTechnology = programmingTechnologyRepository.getReferenceById(id);

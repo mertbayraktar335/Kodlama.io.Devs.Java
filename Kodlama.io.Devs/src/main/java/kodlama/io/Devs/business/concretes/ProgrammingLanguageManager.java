@@ -53,12 +53,11 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
     @Override
     public void delete(int id) throws Exception {
 
-        
         if (!isIdExist(id)) {
             throw new Exception("Programlama Dili Bulunamadı");
         }
-        ProgrammingLanguage pLanguageToDelete = programmingLanguageRepository.findById(id).get();
-        programmingLanguageRepository.delete(pLanguageToDelete);
+        
+        programmingLanguageRepository.deleteById(id);
 
     }
 
@@ -72,7 +71,7 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
         GetByIdProgrammingLanguageResponse responseItem = new GetByIdProgrammingLanguageResponse();
         responseItem.setId(programmingLanguage.getId());
         responseItem.setName(programmingLanguage.getName());
-        // responseItem.setTechnologies(programmingLanguage.getTechnologies().toArray());
+
         return responseItem;
 
     }
@@ -83,7 +82,7 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
             throw new Exception("Programlama Dili Bulunamadı");
 
         }
-        if(!isNameValid(updateProgrammingLanguageRequest.getName())){
+        if (!isNameValid(updateProgrammingLanguageRequest.getName())) {
             throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
         }
         ProgrammingLanguage programmingLanguage = programmingLanguageRepository.getReferenceById(id);

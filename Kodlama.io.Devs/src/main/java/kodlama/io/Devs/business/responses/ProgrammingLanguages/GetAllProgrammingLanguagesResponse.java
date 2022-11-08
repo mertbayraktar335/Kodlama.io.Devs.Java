@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class GetAllProgrammingLanguagesResponse {
     private int id;
     private String name;
+    
 
 }

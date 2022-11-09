@@ -12,28 +12,35 @@ import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetAllProgramming
 import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetByIdProgrammingLanguageResponse;
 import kodlama.io.Devs.dataAccess.abstracts.ProgrammingLanguages.ProgrammingLanguageRepository;
 import kodlama.io.Devs.entities.concretes.ProgrammingLanguage;
+import kodlama.io.Devs.entities.concretes.ProgrammingTechnology;
 
 @Service
 public class ProgrammingLanguageManager implements ProgrammingLanguageService {
 
     private ProgrammingLanguageRepository programmingLanguageRepository;
-
+    
+    
     public ProgrammingLanguageManager(ProgrammingLanguageRepository programmingLanguageRepository) {
         this.programmingLanguageRepository = programmingLanguageRepository;
+        
     }
 
     @Override
     public List<GetAllProgrammingLanguagesResponse> getAll() {
         List<ProgrammingLanguage> pLanguages = programmingLanguageRepository.findAll();
         List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses = new ArrayList<GetAllProgrammingLanguagesResponse>();
-
+       
         for (ProgrammingLanguage programmingLanguage : pLanguages) {
-
+            List<String> pLanguageTechs = new ArrayList<>();
             GetAllProgrammingLanguagesResponse responseItem = new GetAllProgrammingLanguagesResponse();
             responseItem.setId(programmingLanguage.getId());
             responseItem.setName(programmingLanguage.getName());
+            
+            for (ProgrammingTechnology pTechnology : programmingLanguage.getTechnologies()) {
+                pLanguageTechs.add(pTechnology.getName());
+            }
+            responseItem.setTechnologies(pLanguageTechs);
             programmingLanguagesResponses.add(responseItem);
-
         }
 
         return programmingLanguagesResponses;
@@ -69,9 +76,14 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
         }
         ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).get();
         GetByIdProgrammingLanguageResponse responseItem = new GetByIdProgrammingLanguageResponse();
+      
         responseItem.setId(programmingLanguage.getId());
         responseItem.setName(programmingLanguage.getName());
-
+        List<String> pLanguageTechs = new ArrayList<>();
+        for (ProgrammingTechnology pTechnology : programmingLanguage.getTechnologies()) {
+            pLanguageTechs.add(pTechnology.getName());
+        }
+        responseItem.setTechnologies(pLanguageTechs);
         return responseItem;
 
     }

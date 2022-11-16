@@ -28,7 +28,8 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
     @Override
     public List<GetAllProgrammingLanguagesResponse> getAll() {
         List<ProgrammingLanguage> pLanguages = programmingLanguageRepository.findAll();
-        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses = new ArrayList<GetAllProgrammingLanguagesResponse>();
+        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses = 
+        new ArrayList<GetAllProgrammingLanguagesResponse>();
        
         for (ProgrammingLanguage programmingLanguage : pLanguages) {
             List<String> pLanguageTechs = new ArrayList<>();

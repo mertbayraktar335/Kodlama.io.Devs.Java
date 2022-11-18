@@ -18,28 +18,24 @@ import kodlama.io.Devs.entities.concretes.ProgrammingTechnology;
 public class ProgrammingLanguageManager implements ProgrammingLanguageService {
 
     private ProgrammingLanguageRepository programmingLanguageRepository;
-    
-    
+
     public ProgrammingLanguageManager(ProgrammingLanguageRepository programmingLanguageRepository) {
         this.programmingLanguageRepository = programmingLanguageRepository;
-        
+
     }
 
     @Override
     public List<GetAllProgrammingLanguagesResponse> getAll() {
         List<ProgrammingLanguage> pLanguages = programmingLanguageRepository.findAll();
-        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses = 
-        new ArrayList<GetAllProgrammingLanguagesResponse>();
-       
+        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses = new ArrayList<GetAllProgrammingLanguagesResponse>();
+
         for (ProgrammingLanguage programmingLanguage : pLanguages) {
-            List<String> pLanguageTechs = new ArrayList<>();
+
             GetAllProgrammingLanguagesResponse responseItem = new GetAllProgrammingLanguagesResponse();
             responseItem.setId(programmingLanguage.getId());
             responseItem.setName(programmingLanguage.getName());
-            
-            for (ProgrammingTechnology pTechnology : programmingLanguage.getTechnologies()) {
-                pLanguageTechs.add(pTechnology.getName());
-            }
+            List<String> pLanguageTechs = new ArrayList<>();
+            getTechList(pLanguageTechs, programmingLanguage);
             responseItem.setTechnologies(pLanguageTechs);
             programmingLanguagesResponses.add(responseItem);
         }
@@ -64,7 +60,7 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
         if (!isIdExist(id)) {
             throw new Exception("Programlama Dili Bulunamadı");
         }
-        
+
         programmingLanguageRepository.deleteById(id);
 
     }
@@ -77,13 +73,11 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
         }
         ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).get();
         GetByIdProgrammingLanguageResponse responseItem = new GetByIdProgrammingLanguageResponse();
-      
+
         responseItem.setId(programmingLanguage.getId());
         responseItem.setName(programmingLanguage.getName());
         List<String> pLanguageTechs = new ArrayList<>();
-        for (ProgrammingTechnology pTechnology : programmingLanguage.getTechnologies()) {
-            pLanguageTechs.add(pTechnology.getName());
-        }
+        getTechList(pLanguageTechs, programmingLanguage);
         responseItem.setTechnologies(pLanguageTechs);
         return responseItem;
 
@@ -127,6 +121,12 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
 
         }
         return true;
+    }
+
+    private void getTechList(List<String> list, ProgrammingLanguage programmingLanguage) {
+        for (ProgrammingTechnology pTechnology : programmingLanguage.getTechnologies()) {
+            list.add(pTechnology.getName());
+        }
     }
 
 }

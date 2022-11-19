@@ -3,6 +3,8 @@ package kodlama.io.Devs.business.concretes;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import kodlama.io.Devs.business.abstracts.ProgrammingLanguageService;
@@ -39,19 +41,20 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
             responseItem.setTechnologies(pLanguageTechs);
             programmingLanguagesResponses.add(responseItem);
         }
-
+        
         return programmingLanguagesResponses;
     }
 
     @Override
-    public ProgrammingLanguage add(CreateProgrammingLangugageRequest programmingLanguageRequest) throws Exception {
+    public void add(CreateProgrammingLangugageRequest programmingLanguageRequest) throws Exception {
 
         if (!isNameValid(programmingLanguageRequest.getName())) {
             throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
         }
         ProgrammingLanguage programmingLanguage = new ProgrammingLanguage();
         programmingLanguage.setName(programmingLanguageRequest.getName());
-        return programmingLanguageRepository.save(programmingLanguage);
+         programmingLanguageRepository.save(programmingLanguage);
+         
     }
 
     @Override
@@ -68,16 +71,18 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
     @Override
     public GetByIdProgrammingLanguageResponse getById(int id) throws Exception {
 
-        if (!isIdExist(id)) {
-            throw new Exception("Programlama Dili Bulunamadı");
-        }
-        ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).get();
+        // if (!isIdExist(id)) {
+        //     throw new Exception("Programlama Dili Bulunamadı");
+        // }
+        ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Programming Language Not Found"));
         GetByIdProgrammingLanguageResponse responseItem = new GetByIdProgrammingLanguageResponse();
 
         responseItem.setId(programmingLanguage.getId());
         responseItem.setName(programmingLanguage.getName());
         List<String> pLanguageTechs = new ArrayList<>();
+
         getTechList(pLanguageTechs, programmingLanguage);
+        
         responseItem.setTechnologies(pLanguageTechs);
         return responseItem;
 

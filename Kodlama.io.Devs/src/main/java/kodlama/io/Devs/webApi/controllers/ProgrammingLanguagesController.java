@@ -15,7 +15,6 @@ import kodlama.io.Devs.business.requests.ProgrammingLanguages.CreateProgrammingL
 import kodlama.io.Devs.business.requests.ProgrammingLanguages.UpdateProgrammingLanguageRequest;
 import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetAllProgrammingLanguagesResponse;
 import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetByIdProgrammingLanguageResponse;
-import kodlama.io.Devs.entities.concretes.ProgrammingLanguage;
 
 @RestController // annotation
 @RequestMapping("/api/pLangs")
@@ -33,8 +32,8 @@ public class ProgrammingLanguagesController {
     }
 
     @PostMapping("/add")
-    public ProgrammingLanguage add(CreateProgrammingLangugageRequest programmingLanguageRequest) throws Exception {
-        return programmingLanguageService.add(programmingLanguageRequest);
+    public void add(CreateProgrammingLangugageRequest programmingLanguageRequest) throws Exception {
+         programmingLanguageService.add(programmingLanguageRequest);
     }
 
     @DeleteMapping("/delete")

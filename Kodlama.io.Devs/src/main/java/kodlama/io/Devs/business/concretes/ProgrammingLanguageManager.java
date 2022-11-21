@@ -48,7 +48,7 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
     @Override
     public void add(CreateProgrammingLangugageRequest programmingLanguageRequest) throws Exception {
 
-        if (!isNameValid(programmingLanguageRequest.getName())) {
+        if (isExistByName(programmingLanguageRequest.getName())|| programmingLanguageRequest.getName().isBlank()) {
             throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
         }
         ProgrammingLanguage programmingLanguage = new ProgrammingLanguage();
@@ -71,9 +71,7 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
     @Override
     public GetByIdProgrammingLanguageResponse getById(int id) throws Exception {
 
-        // if (!isIdExist(id)) {
-        //     throw new Exception("Programlama Dili Bulunamadı");
-        // }
+       
         ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Programming Language Not Found"));
         GetByIdProgrammingLanguageResponse responseItem = new GetByIdProgrammingLanguageResponse();
 
@@ -90,14 +88,11 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
 
     @Override
     public void update(UpdateProgrammingLanguageRequest updateProgrammingLanguageRequest, int id) throws Exception {
-        if (!isIdExist(id)) {
-            throw new Exception("Programlama Dili Bulunamadı");
-
-        }
-        if (!isNameValid(updateProgrammingLanguageRequest.getName())) {
+       
+        if (isExistByName(updateProgrammingLanguageRequest.getName())) {
             throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
         }
-        ProgrammingLanguage programmingLanguage = programmingLanguageRepository.getReferenceById(id);
+        ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Programming Language Not Found"));
         programmingLanguage.setName(updateProgrammingLanguageRequest.getName());
         programmingLanguageRepository.save(programmingLanguage);
     }
@@ -112,20 +107,9 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService {
         return false;
     }
 
-    private boolean isNameValid(String name) throws Exception {
-        if (name.isBlank()) {
-            return false;
-        }
-        for (ProgrammingLanguage p : programmingLanguageRepository.findAll()) {
-
-            if (name.equalsIgnoreCase(p.getName())) {
-
-                return false;
-
-            }
-
-        }
-        return true;
+  
+    private boolean isExistByName(String name){
+        return programmingLanguageRepository.existsByNameIgnoreCase(name);
     }
 
     private void getTechList(List<String> list, ProgrammingLanguage programmingLanguage) {

@@ -3,6 +3,8 @@ package kodlama.io.Devs.business.concretes;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import kodlama.io.Devs.business.abstracts.ProgrammingTechnologyService;
@@ -51,12 +53,11 @@ public class ProgrammingTechnologyManager implements ProgrammingTechnologyServic
         if (!isNameValid(programmingTechnologyRequest.getName())) {
             throw new Exception("İsim alanı boş veya sistemdeki isimle aynı");
         }
-        if (!isPLanguageIdExist(programmingTechnologyRequest.getProgrammingLanguageId())) {
-            throw new Exception("Programlama Dili Bulunamadı");
-        }
+
         ProgrammingTechnology programmingTechnology = new ProgrammingTechnology();
         ProgrammingLanguage programmingLanguage = programmingLanguageRepository
-                .findById(programmingTechnologyRequest.getProgrammingLanguageId()).get();
+                .findById(programmingTechnologyRequest.getProgrammingLanguageId())
+                .orElseThrow(() -> new EntityNotFoundException("Programming Language Not Found"));
         programmingTechnology.setName(programmingTechnologyRequest.getName());
         programmingTechnology.setProgrammingLanguage(programmingLanguage);
         programmingTechnologyRepository.save(programmingTechnology);

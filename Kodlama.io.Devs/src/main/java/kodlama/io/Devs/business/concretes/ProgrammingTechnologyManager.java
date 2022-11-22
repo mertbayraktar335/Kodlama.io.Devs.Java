@@ -129,13 +129,13 @@ public class ProgrammingTechnologyManager implements ProgrammingTechnologyServic
         return true;
     }
 
-    private boolean isPLanguageIdExist(int id) {
-        for (ProgrammingLanguage pLanguage : programmingLanguageRepository.findAll()) {
-            if (pLanguage.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // private boolean isPLanguageIdExist(int id) {
+    //     for (ProgrammingLanguage pLanguage : programmingLanguageRepository.findAll()) {
+    //         if (pLanguage.getId() == id) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
 }

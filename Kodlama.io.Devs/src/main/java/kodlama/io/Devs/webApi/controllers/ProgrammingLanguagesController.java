@@ -2,7 +2,6 @@ package kodlama.io.Devs.webApi.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +14,14 @@ import kodlama.io.Devs.business.requests.ProgrammingLanguages.CreateProgrammingL
 import kodlama.io.Devs.business.requests.ProgrammingLanguages.UpdateProgrammingLanguageRequest;
 import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetAllProgrammingLanguagesResponse;
 import kodlama.io.Devs.business.responses.ProgrammingLanguages.GetByIdProgrammingLanguageResponse;
+import lombok.AllArgsConstructor;
 
 @RestController // annotation
+@AllArgsConstructor
 @RequestMapping("/api/pLangs")
+
 public class ProgrammingLanguagesController {
     private ProgrammingLanguageService programmingLanguageService;
-
-    @Autowired
-    public ProgrammingLanguagesController(ProgrammingLanguageService programmingLanguageService) {
-        this.programmingLanguageService = programmingLanguageService;
-    }
 
     @GetMapping("/getall")
     public List<GetAllProgrammingLanguagesResponse> getAll() {
@@ -33,7 +30,7 @@ public class ProgrammingLanguagesController {
 
     @PostMapping("/add")
     public void add(CreateProgrammingLangugageRequest programmingLanguageRequest) throws Exception {
-         programmingLanguageService.add(programmingLanguageRequest);
+        programmingLanguageService.add(programmingLanguageRequest);
     }
 
     @DeleteMapping("/delete")
@@ -48,8 +45,8 @@ public class ProgrammingLanguagesController {
 
     @PutMapping("/update")
 
-    public void update(UpdateProgrammingLanguageRequest updateProgrammingLanguageRequest,int id)throws Exception {
-        programmingLanguageService.update(updateProgrammingLanguageRequest,id);
+    public void update(UpdateProgrammingLanguageRequest updateProgrammingLanguageRequest, int id) throws Exception {
+        programmingLanguageService.update(updateProgrammingLanguageRequest, id);
     }
 
 }
